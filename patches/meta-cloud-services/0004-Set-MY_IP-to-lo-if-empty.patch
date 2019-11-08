@@ -1,0 +1,26 @@
+From 8fa0bbc855edd4ad504d89384dad73e539b97df7 Mon Sep 17 00:00:00 2001
+From: babak sarashki <babak.sarashki@windriver.com>
+Date: Sat, 19 Oct 2019 09:18:20 -0700
+Subject: [PATCH] Set MY_IP to lo if empty
+
+---
+ meta-openstack/recipes-devtools/python/python-nova_git.bb | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/meta-openstack/recipes-devtools/python/python-nova_git.bb b/meta-openstack/recipes-devtools/python/python-nova_git.bb
+index 0ef79de..efe3ce7 100644
+--- a/meta-openstack/recipes-devtools/python/python-nova_git.bb
++++ b/meta-openstack/recipes-devtools/python/python-nova_git.bb
+@@ -86,6 +86,9 @@ do_install_append() {
+     if [ ! -f "${WORKDIR}/nova.conf" ]; then
+         return
+     fi
++    if [ -z ${MY_IP} ]; then
++    	MY_IP="127.0.0.1"
++    fi
+ 
+     TEMPLATE_CONF_DIR=${S}${sysconfdir}/${SRCNAME}
+     NOVA_CONF_DIR=${D}/${sysconfdir}/nova
+-- 
+2.17.1
+

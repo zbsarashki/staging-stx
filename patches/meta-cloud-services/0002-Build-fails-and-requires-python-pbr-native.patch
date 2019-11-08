@@ -1,0 +1,40 @@
+From b68d11bcfd5bbde3aa9ce9acfec6e0f74d5bfde0 Mon Sep 17 00:00:00 2001
+From: babak sarashki <babak.sarashki@windriver.com>
+Date: Tue, 2 Jul 2019 14:53:33 -0700
+Subject: [PATCH 2/3] Build fails and requires python-pbr-native
+
+---
+ .../recipes-devtools/python/python-openstackclient_git.bb     | 4 ++++
+ .../recipes-devtools/python/python-openstacksdk_git.bb        | 1 +
+ 2 files changed, 5 insertions(+)
+
+diff --git a/meta-openstack/recipes-devtools/python/python-openstackclient_git.bb b/meta-openstack/recipes-devtools/python/python-openstackclient_git.bb
+index ce33f0c..48051a4 100644
+--- a/meta-openstack/recipes-devtools/python/python-openstackclient_git.bb
++++ b/meta-openstack/recipes-devtools/python/python-openstackclient_git.bb
+@@ -17,6 +17,10 @@ inherit setuptools
+ DEPENDS += "\
+         python-pbr \
+         "
++# Satisfy setup.py 'setup_requires'
++DEPENDS += "\
++	python-pbr-native \
++	"
+ 
+ RDEPENDS_${PN} += " \
+         python-pbr \
+diff --git a/meta-openstack/recipes-devtools/python/python-openstacksdk_git.bb b/meta-openstack/recipes-devtools/python/python-openstacksdk_git.bb
+index 12472ec..8e055a7 100644
+--- a/meta-openstack/recipes-devtools/python/python-openstacksdk_git.bb
++++ b/meta-openstack/recipes-devtools/python/python-openstacksdk_git.bb
+@@ -16,6 +16,7 @@ inherit setuptools
+ 
+ DEPENDS += "\
+         python-pbr \
++        python-pbr-native \
+         "
+ 
+ RDEPENDS_${PN} += " \
+-- 
+2.17.1
+
