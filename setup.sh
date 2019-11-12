@@ -15,7 +15,7 @@ fixups() {
 	for LAYER in $(ls -1 $P/patches); do
 		cd $P/workspace/layers/$LAYER
 		for PATCH in $(ls -1 $P/patches/$LAYER); do
-			echo git am $P/patches/$LAYER/$PATCH
+			git am $P/patches/$LAYER/$PATCH
 		done
 		cd $P/
 	done
@@ -101,7 +101,10 @@ EOF
 	echo 'EXTRA_IMAGE_FEATURES += "package-management"' >> conf/local.conf
 
 	########### Customize local.conf:
+	# echo 'SOURCE_MIRROR_URL = ""' >> conf/local.conf
 	# echo 'DL_DIR = ""' >> conf/local.conf
+	# echo 'INHERIT += "own-mirrors"' >> conf/local.conf
+	# echo 'SSTATE_MIRRORS = ""' >> conf/local.conf
 	# echo 'SSTATE_DIR = ""' >> conf/local.conf
 
 }
