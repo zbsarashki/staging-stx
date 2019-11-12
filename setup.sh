@@ -26,7 +26,8 @@ env_setup() {
 	mkdir -p $P/workspace/{layers,build}
 	cd $P/workspace/layers
 
-	git clone --branch master  https://github.com/zbsarashki/meta-stx.git
+	git clone --branch zbsarashki/thud_stx_110919 https://github.com/zbsarashki/meta-stx.git
+	git clone --branch zbsarashki/thud_stak_common https://github.com/zbsarashki/meta-starlingX.git
 	git clone --branch thud git://git.yoctoproject.org/poky.git
 	git clone --branch thud git://git.openembedded.org/meta-openembedded
 	git clone --branch thud git://git.yoctoproject.org/meta-virtualization
@@ -87,6 +88,7 @@ BBLAYERS ?= " \\
 	$P/workspace/layers/meta-rauc \\
 	$P/workspace/layers/meta-iot-cloud \\
 	$P/workspace/layers/meta-stx \\
+	$P/workspace/layers/meta-starlingX \\
 	"
 EOF
 
