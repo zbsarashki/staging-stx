@@ -19,7 +19,12 @@ fixups() {
 		done
 		cd $P/
 	done
-
+	echo "On some build servers rabbitmq builds fail if the number of cores >> 8"
+	echo "As a workaround: patching meta-stx/recipes-extended/rabbitmq to build with -j7"
+	echo "and we ignore changes to meta-stx/recipes-extended/rabbitmq/rabbitmq-server_3.2.4.bbappend"
+	echo "recipes-extended/rabbitmq" >> $P/workspace/meta-stx/.gitignore
+	echo -n "Enter to continue: "
+	read junk
 }
 
 env_setup() {
