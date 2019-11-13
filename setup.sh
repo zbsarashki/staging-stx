@@ -15,18 +15,24 @@ fixups() {
 	for LAYER in $(ls -1 $P/patches); do
 		cd $P/workspace/layers/$LAYER
 		for PATCH in $(ls -1 $P/patches/$LAYER); do
-			echo git am $P/patches/$LAYER/$PATCH
+			git am $P/patches/$LAYER/$PATCH
 		done
 		cd $P/
 	done
-
+	echo "On some build servers rabbitmq builds fail if the number of cores >> 8"
+	echo "As a workaround: patching meta-stx/recipes-extended/rabbitmq to build with -j7"
+	echo "and we ignore changes to meta-stx/recipes-extended/rabbitmq/rabbitmq-server_3.2.4.bbappend"
+	echo "recipes-extended/rabbitmq" >> $P/workspace/layers/meta-stx/.gitignore
+	echo -n "Enter to continue: "
+	read junk
 }
 
 env_setup() {
 	mkdir -p $P/workspace/{layers,build}
 	cd $P/workspace/layers
 
-	git clone --branch master  https://github.com/zbsarashki/meta-stx.git
+	git clone --branch zbsarashki/thud_stx_110919 https://github.com/zbsarashki/meta-stx.git
+	git clone --branch zbsarashki/thud_stak_common https://github.com/zbsarashki/meta-starlingX.git
 	git clone --branch thud git://git.yoctoproject.org/poky.git
 	git clone --branch thud git://git.openembedded.org/meta-openembedded
 	git clone --branch thud git://git.yoctoproject.org/meta-virtualization
@@ -87,6 +93,7 @@ BBLAYERS ?= " \\
 	$P/workspace/layers/meta-rauc \\
 	$P/workspace/layers/meta-iot-cloud \\
 	$P/workspace/layers/meta-stx \\
+	$P/workspace/layers/meta-starlingX \\
 	"
 EOF
 
@@ -99,8 +106,11 @@ EOF
 	echo 'EXTRA_IMAGE_FEATURES += "package-management"' >> conf/local.conf
 
 	########### Customize local.conf:
-	# echo 'DL_DIR = ""' >> conf/local.conf
-	# echo 'SSTATE_DIR = ""' >> conf/local.conf
+	#echo 'SOURCE_MIRROR_URL = ""' >> conf/local.conf
+	#echo 'INHERIT += "own-mirrors"' >> conf/local.conf
+	#echo 'DL_DIR = "/ala-lpggp22/bsarashk/downloads"' >> conf/local.conf
+	#echo 'SSTATE_DIR = "/ala-lpggp22/bsarashk/sstate-cache"' >> conf/local.conf
+	#echo 'SSTATE_MIRRORS = ""' >> conf/local.conf
 
 }
 
