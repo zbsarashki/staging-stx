@@ -102,8 +102,8 @@ EOF
 	########### Customize local.conf:
 	#echo 'SOURCE_MIRROR_URL = ""' >> conf/local.conf
 	#echo 'INHERIT += "own-mirrors"' >> conf/local.conf
-	echo 'DL_DIR = "/ala-lpggp22/bsarashk/downloads"' >> conf/local.conf
-	echo 'SSTATE_DIR = "/ala-lpggp22/bsarashk/sstate-cache"' >> conf/local.conf
+	#echo 'DL_DIR = "/ala-lpggp22/bsarashk/downloads"' >> conf/local.conf
+	#echo 'SSTATE_DIR = "/ala-lpggp22/bsarashk/sstate-cache"' >> conf/local.conf
 	#echo 'SSTATE_MIRRORS = ""' >> conf/local.conf
 
 }
