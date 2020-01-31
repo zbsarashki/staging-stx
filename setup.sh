@@ -25,19 +25,18 @@ env_setup() {
 	mkdir -p $P/workspace/{layers,build}
 	cd $P/workspace/layers
 
-	git clone --branch zbsarashki/thud_stx_110919 https://github.com/zbsarashki/meta-stx.git
-	git clone --branch zbsarashki/thud_stak_common https://github.com/zbsarashki/meta-starlingX.git
-	git clone --branch thud git://git.yoctoproject.org/poky.git
-	git clone --branch thud git://git.openembedded.org/meta-openembedded
-	git clone --branch thud git://git.yoctoproject.org/meta-virtualization
-        git clone --branch thud git://git.yoctoproject.org/meta-cloud-services
-	git clone --branch thud git://git.yoctoproject.org/meta-selinux
-	git clone --branch thud git://git.yoctoproject.org/meta-security
-	git clone --branch thud https://github.com/jiazhang0/meta-secure-core.git
-	git clone --branch thud https://github.com/rauc/meta-rauc.git
-	git clone --branch thud git://git.yoctoproject.org/meta-intel
-	git clone --branch thud git://git.yoctoproject.org/meta-intel-qat
-	git clone --branch thud https://github.com/intel-iot-devkit/meta-iot-cloud.git
+	git clone --branch warrior git://git.yoctoproject.org/poky.git
+	git clone --branch warrior git://git.openembedded.org/meta-openembedded
+	git clone --branch warrior git://git.yoctoproject.org/meta-virtualization
+	git clone --branch warrior git://git.yoctoproject.org/meta-cloud-services
+	git clone --branch warrior git://git.yoctoproject.org/meta-security
+	git clone --branch warrior git://git.yoctoproject.org/meta-intel
+	git clone --branch warrior git://git.yoctoproject.org/meta-security
+	git clone --branch warrior git://git.yoctoproject.org/meta-selinux
+	git clone --branch warrior https://github.com/intel-iot-devkit/meta-iot-cloud.git
+	git clone --branch warrior git://git.openembedded.org/meta-python2
+	git clone --branch r3_rebase  https://github.com/zbsarashki/meta-stx.git
+	git clone --branch r3_rebase https://github.com/zbsarashki/meta-starlingX.git
 	cd $P
 }
 
@@ -64,7 +63,6 @@ BBLAYERS ?= " \\
 	$P/workspace/layers/meta-openembedded/meta-python \\
 	$P/workspace/layers/meta-openembedded/meta-webserver \\
 	$P/workspace/layers/meta-openembedded/meta-initramfs \\
-	$P/workspace/layers/meta-openembedded/meta-gnome \\
 	$P/workspace/layers/meta-virtualization \\
 	$P/workspace/layers/meta-cloud-services \\
 	$P/workspace/layers/meta-cloud-services/meta-openstack \\
@@ -73,19 +71,12 @@ BBLAYERS ?= " \\
 	$P/workspace/layers/meta-cloud-services/meta-openstack-controller-deploy \\
 	$P/workspace/layers/meta-cloud-services/meta-openstack-qemu \\
 	$P/workspace/layers/meta-cloud-services/meta-openstack-swift-deploy \\
-	$P/workspace/layers/meta-secure-core/meta-signing-key \\
-	$P/workspace/layers/meta-secure-core/meta-efi-secure-boot \\
-	$P/workspace/layers/meta-secure-core/meta-encrypted-storage \\
-	$P/workspace/layers/meta-secure-core/meta-integrity \\
-	$P/workspace/layers/meta-secure-core/meta-tpm2 \\
-	$P/workspace/layers/meta-secure-core/meta \\
+	$P/workspace/layers/meta-intel \\
 	$P/workspace/layers/meta-security \\
 	$P/workspace/layers/meta-security/meta-security-compliance \\
 	$P/workspace/layers/meta-selinux \\
-	$P/workspace/layers/meta-intel \\
-	$P/workspace/layers/meta-intel-qat \\
-	$P/workspace/layers/meta-rauc \\
 	$P/workspace/layers/meta-iot-cloud \\
+	$P/workspace/layers/meta-python2 \\
 	$P/workspace/layers/meta-stx \\
 	$P/workspace/layers/meta-starlingX \\
 	"
@@ -102,8 +93,8 @@ EOF
 	########### Customize local.conf:
 	#echo 'SOURCE_MIRROR_URL = ""' >> conf/local.conf
 	#echo 'INHERIT += "own-mirrors"' >> conf/local.conf
-	#echo 'DL_DIR = "/ala-lpggp22/bsarashk/downloads"' >> conf/local.conf
-	#echo 'SSTATE_DIR = "/ala-lpggp22/bsarashk/sstate-cache"' >> conf/local.conf
+	#echo 'DL_DIR = "/path to download"' >> conf/local.conf
+	#echo 'SSTATE_DIR = "/path to sstate-cache"' >> conf/local.conf
 	#echo 'SSTATE_MIRRORS = ""' >> conf/local.conf
 
 }
