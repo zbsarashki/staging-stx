@@ -7,9 +7,6 @@ P=$PWD
 
 
 fixups() {
-	cd $P/workspace/layers/poky
-	# if /bin/sh is symlinked to other than bash
-	ls -l /bin/sh | grep -q bash || sed -i -e 's:/bin/sh:/bin/bash:g' bitbake/lib/bb/build.py
 	cd $P
 	# Apply patches
 	for LAYER in $(ls -1 $P/patches); do
