@@ -36,7 +36,7 @@ umount_fs() {
 }
 
 get_nbd_avail() {
-	for x in /sys/class/block/nbd+([0-9]) ; do 
+	for x in $(find /sys/class/block/ -maxdepth 1 -regex '\/.*\/block\/nbd[0-9]+'); do
 		qdev=$x
 		[ ! -f $qdev/pid ] && break
 	done
@@ -49,7 +49,7 @@ install_fs() {
 	cat > $PWD/mnt/boot/loader/entries/boot.conf << \EOF
 title boot
 linux /bzImage
-options LABEL=boot rootwait console=ttyS0,115200 root=/dev/hda2 selinux=0
+options LABEL=boot rootwait console=ttyS0,115200 root=/dev/sda2 selinux=0
 EOF
 	# mv mnt/boot/bzImage-.*-yocto-standard mnt/boot/bzImage
 	mv mnt/boot/bzImage-5.0.19-yocto-standard mnt/boot/bzImage
