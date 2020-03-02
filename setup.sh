@@ -32,8 +32,8 @@ env_setup() {
 	git clone --branch warrior git://git.yoctoproject.org/meta-selinux
 	git clone --branch warrior https://github.com/intel-iot-devkit/meta-iot-cloud.git
 	git clone --branch warrior git://git.openembedded.org/meta-python2
-	git clone --branch r3_rebase  https://github.com/zbsarashki/meta-stx.git
-	git clone --branch r3_rebase https://github.com/zbsarashki/meta-starlingX.git
+	git clone --branch master https://github.com/zbsarashki/meta-stx.git
+	git clone --branch master https://github.com/zbsarashki/meta-starlingX.git
 	cd $P
 }
 
@@ -63,11 +63,6 @@ BBLAYERS ?= " \\
 	$P/workspace/layers/meta-virtualization \\
 	$P/workspace/layers/meta-cloud-services \\
 	$P/workspace/layers/meta-cloud-services/meta-openstack \\
-	$P/workspace/layers/meta-cloud-services/meta-openstack-aio-deploy \\
-	$P/workspace/layers/meta-cloud-services/meta-openstack-compute-deploy \\
-	$P/workspace/layers/meta-cloud-services/meta-openstack-controller-deploy \\
-	$P/workspace/layers/meta-cloud-services/meta-openstack-qemu \\
-	$P/workspace/layers/meta-cloud-services/meta-openstack-swift-deploy \\
 	$P/workspace/layers/meta-intel \\
 	$P/workspace/layers/meta-security \\
 	$P/workspace/layers/meta-security/meta-security-compliance \\
