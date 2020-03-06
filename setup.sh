@@ -81,6 +81,7 @@ EOF
 	echo 'EXTRA_IMAGE_FEATURES += "tools-sdk"' >> conf/local.conf
 	echo 'EXTRA_IMAGE_FEATURES += "tools-debug"' >> conf/local.conf
 	echo 'EXTRA_IMAGE_FEATURES += "package-management"' >> conf/local.conf
+	echo 'DISTRO = "stx"' >> conf/layer.conf
 
 	########### Customize local.conf:
 	#echo 'SOURCE_MIRROR_URL = ""' >> conf/local.conf
