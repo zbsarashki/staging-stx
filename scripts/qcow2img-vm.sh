@@ -11,28 +11,38 @@ if [ $PWD = "/" ]; then
 fi
 
 part_disk() {
-	parted /dev/$qdev -s mklabel msdos
-	parted -a none /dev/$qdev -s mkpart primary fat32 18kB 512MB
-	parted -a none /dev/$qdev -s mkpart primary ext4 512MB 20G
-	parted -a none /dev/$qdev -s mkpart primary ext4 20GB 100%
+	parted /dev/$qdev -s mklabel gpt
+	parted -a none /dev/$qdev -s mkpart primary 1MB 2MB
+	parted -a none /dev/$qdev -s mkpart primary fat32 2MB 514MB
+	parted -a none /dev/$qdev -s mkpart primary ext4  514MB 20G
+	parted -a none /dev/$qdev -s mkpart primary 20GB 100%
+	
+	parted -a none /dev/$qdev -s set 1 bios_grub on
+	parted -a none /dev/$qdev -s set 4 lvm on
+	
 }
 
 gen_fsystem() {
-	mkdosfs /dev/${qdev}p1
-	mkfs.ext4 /dev/${qdev}p2
+	mkdosfs /dev/${qdev}p2
+	mkfs.ext4 /dev/${qdev}p3
+
+	lvmetad -f &
+	p=$!
+	pvcreate /dev/${qdev}p4
+	vgcreate cgts-vg /dev/${qdev}p4
+	kill -2 $p
 }
 
 mount_fs() {
 	mkdir -p mnt
-	mount /dev/${qdev}p2 mnt
+	mount /dev/${qdev}p3 mnt
 	mkdir -p mnt/boot
-	mount /dev/${qdev}p1 mnt/boot
+	mount /dev/${qdev}p2 mnt/boot
 }
 
 umount_fs() {
-	umount /dev/${qdev}p1
 	umount /dev/${qdev}p2
-	# rm -rf mnt
+	umount /dev/${qdev}p3
 }
 
 get_nbd_avail() {
@@ -49,7 +59,7 @@ install_fs() {
 	cat > $PWD/mnt/boot/loader/entries/boot.conf << \EOF
 title boot
 linux /bzImage
-options LABEL=boot rootwait console=ttyS0,115200 root=/dev/sda2 selinux=0
+options LABEL=boot rootwait console=ttyS0,115200 root=/dev/sda3 selinux=0
 EOF
 	# mv mnt/boot/bzImage-.*-yocto-standard mnt/boot/bzImage
 	mv mnt/boot/bzImage-5.0.19-yocto-standard mnt/boot/bzImage
@@ -91,32 +101,37 @@ EOF
 }
 
 gen_raw() {
-	echo "not implemented yet"
-	exit 0
-}
+	rm -f $dimg
+	fallocate -l $dsz $dimg
+	losetup -fv $dimg
 
-stashed_this_for_now() {
-mkdosfs /dev/mapper/$(basename $ldev)p1
-mkfs.ext4 /dev/mapper/$(basename $ldev)p2
-mkdir -p mnt
-mount /dev/mapper/$(basename $ldev)p2 mnt
-mkdir mnt/boot
-mount /dev/mapper/$(basename $ldev)p1 mnt/boot
+	ldev=$(losetup -l | grep "$PWD/$dimg" | cut -d' ' -f1)
+	qdev=$(basename $ldev)
 
-tar -C mnt -xvjpf $rfsimg
+	part_disk 
 
-cat > $PWD/mnt/boot/loader/entries/boot.conf << \EOF
-title boot
-linux /bzImage
-options LABEL=boot rootwait console=ttyS0,115200 root=/dev/hda2 selinux=0
+	gen_fsystem
+	mount_fs 
+	install_fs 
+
+cat << \EOF
+Dropping into Shell now. This will give you a chance to modify and inspect the filesystem.
+exit once done.
+EOF
+	/bin/bash
+
+cat << \EOF
+Back from shell. Umounting fs. May take a while.
 EOF
 
-mv $PWD/mnt/boot/bzImage-4.18.33-yocto-standard $PWD/mnt/boot/bzImage
+	grub-install --boot-directory=$PWD/mnt/boot $ldev
 
-umount mnt/boot
-umount mnt
-kpartx -d $ldev
-losetup -d $ldev
+	umount_fs 
+	losetup -d $ldev
+
+	# cleanup partition nodes that parted created
+	rm -f ${ldev}p*
+
 }
 
 usage() {
@@ -167,8 +182,13 @@ done
 [ -z $dimg ] && usage
 [ -z $dsz ] && usage
 
-echo -e -n "Generating image: $dimg of size $dsz with contents from $rfsimg in $PWD!\nIs this correct (y/n)?"
-read ans
+while [ 1 ] ; do
+	echo -e -n "Generating image: $dimg of size $dsz with contents from $rfsimg in $PWD!\nIs this correct (y/n)?"
+	read ans
+	[ -z $ans ] && continue
+	[ "$ans" == "y" ] || [ "$ans" == "n" ]  && break
+done
+
 
 if [ $ans != 'y' ]; then 
 	echo "OK: exiting"
