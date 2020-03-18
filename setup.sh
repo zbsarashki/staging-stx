@@ -78,7 +78,8 @@ EOF
 
 	sed -i -e 's/^\(#MACHINE.*\"qemuarm\"\)/MACHINE \?= \"intel-corei7-64\"\n\1/g' conf/local.conf
 	echo 'PREFERRED_PROVIDER_virtual/kernel = "linux-yocto"' >> conf/local.conf
-	echo 'IMAGE_FSTYPES = " tar.bz2"' >> conf/local.conf
+	echo 'IMAGE_FSTYPES = " tar.bz2 live"' >> conf/local.conf
+	echo 'LABELS_LIVE = "install"' >> conf/local.conf
 	echo 'EXTRA_IMAGE_FEATURES ?= "debug-tweaks"'  >> conf/local.conf
 	echo 'EXTRA_IMAGE_FEATURES += "tools-sdk"' >> conf/local.conf
 	echo 'EXTRA_IMAGE_FEATURES += "tools-debug"' >> conf/local.conf
