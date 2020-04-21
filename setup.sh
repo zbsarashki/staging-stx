@@ -33,8 +33,8 @@ env_setup() {
 	git clone --branch warrior https://github.com/intel-iot-devkit/meta-iot-cloud.git
 	git clone --branch warrior git://git.openembedded.org/meta-python2
 	git clone --branch warrior https://git.yoctoproject.org/git/meta-dpdk
-	git clone --branch master https://github.com/zbsarashki/meta-stx.git
-	git clone --branch master https://github.com/zbsarashki/meta-starlingX.git
+	git clone --branch warrior git@github.com:Wind-River/meta-stx.git
+	git clone --branch warrior git@github.com:Wind-River/meta-stak-common.git
 	cd $P
 }
 
@@ -72,7 +72,7 @@ BBLAYERS ?= " \\
 	$P/workspace/layers/meta-python2 \\
 	$P/workspace/layers/meta-dpdk \\
 	$P/workspace/layers/meta-stx \\
-	$P/workspace/layers/meta-starlingX \\
+	$P/workspace/layers/meta-stak-common \\
 	"
 EOF
 
