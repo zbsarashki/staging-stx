@@ -39,7 +39,7 @@ env_setup() {
 }
 
 setup_build() {
-	echo 'MACHINE ?= "intel-corei7-64"' >> conf/local.conf
+	echo 'MACHINE = "intel-corei7-64"' >> conf/local.conf
 	echo 'PREFERRED_PROVIDER_virtual/kernel = "linux-yocto-rt"' >> conf/local.conf
 	echo 'IMAGE_FSTYPES = " tar.bz2"' >> conf/local.conf
 	echo 'IMAGE_FSTYPES_remove = " wic"' >> conf/local.conf
@@ -57,8 +57,6 @@ setup_build() {
 	echo "DL_DIR = \"$P/downloads\"" >> conf/local.conf
 	echo "SSTATE_DIR = \"$P/sstate-cache\"" >> conf/local.conf
 	#echo 'SSTATE_MIRRORS = ""' >> conf/local.conf
-	# echo 'BB_NUMBER_THREADS = "8"' >> conf/local.conf
-	# echo 'PARALLEL_MAKE = "-j 8"' >> conf/local.conf
 }
 
 setup_installer() {
@@ -69,8 +67,6 @@ setup_installer() {
 	echo "DL_DIR = \"$P/downloads\"" >> conf/local.conf
 	echo "SSTATE_DIR = \"$P/sstate-cache\"" >> conf/local.conf
 	echo 'INSTALLER_TARGET_IMAGE = "stx-image-aio"' >> conf/local.conf
-	echo 'BB_NUMBER_THREADS = "8"' >> conf/local.conf
-	echo 'PARALLEL_MAKE = "-j 8"' >> conf/local.conf
 }
 
 prj_setup() {
